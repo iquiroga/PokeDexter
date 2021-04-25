@@ -1,39 +1,61 @@
 <template>
-  <div class="hello">
-    <h1>{{ msg }}</h1>
-    <p>
-      For a guide and recipes on how to configure / customize this project,<br>
-      check out the
-      <a href="https://cli.vuejs.org" target="_blank" rel="noopener">vue-cli documentation</a>.
-    </p>
-    <h3>Installed CLI Plugins</h3>
-    <ul>
-      <li><a href="https://github.com/vuejs/vue-cli/tree/dev/packages/%40vue/cli-plugin-babel" target="_blank" rel="noopener">babel</a></li>
-    </ul>
-    <h3>Essential Links</h3>
-    <ul>
-      <li><a href="https://vuejs.org" target="_blank" rel="noopener">Core Docs</a></li>
-      <li><a href="https://forum.vuejs.org" target="_blank" rel="noopener">Forum</a></li>
-      <li><a href="https://chat.vuejs.org" target="_blank" rel="noopener">Community Chat</a></li>
-      <li><a href="https://twitter.com/vuejs" target="_blank" rel="noopener">Twitter</a></li>
-      <li><a href="https://news.vuejs.org" target="_blank" rel="noopener">News</a></li>
-    </ul>
-    <h3>Ecosystem</h3>
-    <ul>
-      <li><a href="https://router.vuejs.org" target="_blank" rel="noopener">vue-router</a></li>
-      <li><a href="https://vuex.vuejs.org" target="_blank" rel="noopener">vuex</a></li>
-      <li><a href="https://github.com/vuejs/vue-devtools#vue-devtools" target="_blank" rel="noopener">vue-devtools</a></li>
-      <li><a href="https://vue-loader.vuejs.org" target="_blank" rel="noopener">vue-loader</a></li>
-      <li><a href="https://github.com/vuejs/awesome-vue" target="_blank" rel="noopener">awesome-vue</a></li>
-    </ul>
+  <div class="home">
+    <div>
+      <h1>{{ msg }}</h1>
+      <p>Buscar Pokémon por nombre o Id</p>
+    </div>
+    <div>
+      <input v-model="nameOrId" placeholder="search by name or id">
+      <p>Nombre: {{pokemonName}}</p>
+      <p>Imagen: <img :src="img" alt=""></p>
+      <p>Tipo: {{types}}</p>
+      <p>Experiencia base: {{base_experience}}</p>
+      <p>Altura: {{height}} </p>
+      <p>Peso: {{weight}}</p>
+      <p>Habilidades: {{abilities}}</p>
+      <button class="btn btn-danger" @click="fetch(nameOrId)">Search</button>
+    </div>
   </div>
 </template>
 
 <script>
+import axios from 'axios'
+import { getPokemon } from '../api/pokeApi'
+
 export default {
-  name: 'HelloWorld',
+  name: 'HomePage',
   props: {
     msg: String
+  },
+  data() {
+    return {
+      pokemonName: '',
+      img: '',
+      types: '',
+      nameOrId: '',
+      base_experience: '',
+      height: '',
+      weight: '',
+      abilities: '',
+    }
+  },  
+  methods: {
+    fetch(nameOrId) {
+      axios
+        .get(`https://pokeapi.co/api/v2/pokemon/${nameOrId}`)
+        .then(res => {
+          this.pokemonName = res.data.name;
+          this.img = res.data.sprites.other.dream_world.front_default;
+          this.types = res.data.types[0].type.name + ' ' + res.data.types[1].type.name ;
+          this.base_experience = res.data.base_experience;
+          this.height = res.data.height;
+          this.weight = res.data.weight;
+          this.abilities = res.data.abilities[0].ability.name + ' ' + res.data.abilities[1].ability.name;
+          })
+        .catch(err => {
+          console.log(err);
+        });
+    }
   }
 }
 </script>
