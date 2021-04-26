@@ -61,7 +61,16 @@ async function getTypesInSpanish(arr) {
 }
 
 class Pokemon {
-  constructor(name, img, types, base_experience, height, weight, abilities) {
+  constructor(
+    name,
+    img,
+    types,
+    base_experience,
+    height,
+    weight,
+    abilities,
+    ok = false
+  ) {
     this.name = name;
     this.img = img;
     this.types = types;
@@ -69,13 +78,14 @@ class Pokemon {
     this.height = height;
     this.weight = weight;
     this.abilities = abilities;
+    this.ok = ok;
   }
 }
 
 async function getPokemon(nameOrId) {
-  try {
-    let p = new Pokemon();
-    axios.get(`https://pokeapi.co/api/v2/pokemon/${nameOrId}`)
+  let p = new Pokemon();
+  await axios
+    .get(`https://pokeapi.co/api/v2/pokemon/${nameOrId}`)
     .then(async (res) => {
       p.name = res.data.name;
       p.img = res.data.sprites.other.dream_world.front_default;
@@ -84,14 +94,12 @@ async function getPokemon(nameOrId) {
       p.height = res.data.height;
       p.weight = res.data.weight;
       p.abilities = await getAbilitiesInSpanish(res.data.abilities);
+      p.ok = true;
     })
     .catch((err) => {
       console.log(err);
     });
-    return p;
-  } catch (error) {
-    console.error(error);
-  }
+  return p;
 }
 
-export { getPokemon };
+export { Pokemon, getPokemon };
