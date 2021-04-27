@@ -62,6 +62,7 @@ async function getTypesInSpanish(arr) {
 
 class Pokemon {
   constructor(
+    id,
     name,
     img,
     types,
@@ -71,6 +72,7 @@ class Pokemon {
     abilities,
     ok = false
   ) {
+    this.id = id;
     this.name = name;
     this.img = img;
     this.types = types;
@@ -87,7 +89,8 @@ async function getPokemon(nameOrId) {
   await axios
     .get(`https://pokeapi.co/api/v2/pokemon/${nameOrId}`)
     .then(async (res) => {
-      p.name = res.data.name;
+      p.id = res.data.id;
+      p.name = res.data.name.toUpperCase();
       p.img = res.data.sprites.other.dream_world.front_default;
       p.types = await getTypesInSpanish(res.data.types);
       p.base_experience = res.data.base_experience;

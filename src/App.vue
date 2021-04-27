@@ -1,21 +1,36 @@
 <template>
   <div id="app">
-    <link rel="preconnect" href="https://fonts.gstatic.com">
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400&display=swap" rel="stylesheet">
-    <img alt="Pokemon logo" src="./assets/Pokemon_logo.svg">
-    <main>
-      <HomePage msg="PokeDexter"/>
-    </main>
+    <div>
+      <LinksPage/>
+
+      <HeaderPage/>
+
+      <HomePage/>
+    </div>
+    
+    <div class="col-12 p-0 d-flex flex-wrap justify-content-center align-items-end">
+        <Carrousel/>
+
+        <FooterPage/>
+    </div>
   </div>
 </template>
 
 <script>
-import HomePage from './components/HomePage.vue'
+import LinksPage from './components/LinksPage.vue'
+import HeaderPage from './components/HeaderPage.vue'
+import HomePage from './views/HomePage.vue'
+import Carrousel from './components/CarouselComponent.vue'
+import FooterPage from './components/FooterPage.vue'
 require('./assets/css/main.css');
 export default {
   name: 'App',
   components: {
-    HomePage
+    LinksPage,
+    HomePage,
+    HeaderPage,
+    Carrousel,
+    FooterPage    
   }
 }
 </script>
