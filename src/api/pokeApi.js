@@ -41,6 +41,7 @@ async function getTypesInSpanish(arr) {
 
       await axios.get(element.type.url).then((type) => {
         let typeNames = type.data.names;
+
         for (let j = 0; j < typeNames.length; j++) {
           let item = typeNames[j];
 
@@ -87,7 +88,7 @@ class Pokemon {
 async function getPokemon(nameOrId) {
   let p = new Pokemon();
   await axios
-    .get(`https://pokeapi.co/api/v2/pokemon/${nameOrId}`)
+    .get(`${API_URL}${nameOrId}`)
     .then(async (res) => {
       p.id = res.data.id;
       p.name = res.data.name.toUpperCase();
